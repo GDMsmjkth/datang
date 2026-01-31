@@ -1,0 +1,449 @@
+
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>REKOD KEHADIRAN MURID</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #1A5F7A;
+            line-height: 1.6;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(26, 95, 122, 0.1);
+            overflow: hidden;
+        }
+        
+        /* Header - UBAH: Background putih semua */
+        .header {
+            background-color: white; /* UBAH: Putih (dari #f9f9f9) */
+            padding: 15px 30px 5px 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border-bottom: none; /* UBAH: Buang border bawah */
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+            margin-bottom: 0;
+        }
+        
+        .logo {
+            width: 100px;
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            margin-bottom: 8px;
+        }
+        
+        .logo img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+        
+        .school-name {
+            color: #1A5F7A;
+            font-size: 32px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 0;
+            text-align: center;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        }
+        
+        .title {
+            color: #1A5F7A;
+            font-size: 32px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-align: center;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+            margin-top: 0;
+            margin-bottom: 5px;
+        }
+        
+        /* Bahagian */
+        .section {
+            margin: 15px 30px 30px 30px;
+        }
+        
+        .section-title {
+            background-color: #1A9FB2;
+            color: white;
+            padding: 15px 20px;
+            border-radius: 8px 8px 0 0;
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 0;
+            display: flex;
+            align-items: center;
+        }
+        
+        .section-title i {
+            margin-right: 10px;
+        }
+        
+        .section-content {
+            padding: 25px;
+            border: 1px solid #e1e5eb;
+            border-top: none;
+            border-radius: 0 0 8px 8px;
+            background-color: #f9f9f9;
+        }
+        
+        /* Grid untuk bulan */
+        .months-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+        
+        .month-box {
+            background-color: white;
+            color: #1A5F7A;
+            border-radius: 8px;
+            padding: 15px 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 8px rgba(26, 95, 122, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 65px;
+            text-decoration: none;
+            border: 2px solid #1A5F7A;
+            width: 100%;
+            height: auto;
+        }
+        
+        /* Efek hover untuk setiap kotak bulan */
+        .month-box:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 12px rgba(26, 95, 122, 0.15);
+            /* Warna background berubah berdasarkan bulan */
+        }
+        
+        /* Warna hover khusus untuk setiap bulan */
+        .januari:hover { background-color: #FF6B6B !important; color: white !important; } /* Merah */
+        .februari:hover { background-color: #4ECDC4 !important; color: white !important; } /* Turquoise */
+        .mac:hover { background-color: #95E1D3 !important; color: white !important; } /* Hijau muda */
+        .april:hover { background-color: #FECA57 !important; color: #1A5F7A !important; } /* Kuning oren */
+        .mei:hover { background-color: #FF9FF3 !important; color: white !important; } /* Pink */
+        .jun:hover { background-color: #54A0FF !important; color: white !important; } /* Biru terang */
+        .julai:hover { background-color: #00D2D3 !important; color: white !important; } /* Cyan */
+        .ogos:hover { background-color: #5F27CD !important; color: white !important; } /* Ungu */
+        .september:hover { background-color: #FF9F43 !important; color: white !important; } /* Oren */
+        .oktober:hover { background-color: #EE5A24 !important; color: white !important; } /* Oren gelap */
+        .november:hover { background-color: #A3CB38 !important; color: white !important; } /* Hijau limau */
+        .disember:hover { background-color: #ED4C67 !important; color: white !important; } /* Merah jambu */
+        
+        .month-name {
+            font-size: 20px;
+            font-weight: 700;
+            padding: 5px 0;
+            transition: color 0.3s ease;
+        }
+        
+        /* BUTANG ANALISIS LANGSUNG - TANPA SECTION */
+        .analysis-btn-container {
+            text-align: center;
+            padding: 0 30px 20px 30px;
+        }
+        
+        /* Butang Analisis Kehadiran Bulanan */
+        .analysis-btn {
+            background-color: #1A5F7A;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 18px 35px;
+            font-size: 20px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 5px 15px rgba(26, 95, 122, 0.3);
+            text-decoration: none;
+            min-width: 380px;
+        }
+        
+        .analysis-btn:hover {
+            background-color: #144a60;
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(26, 95, 122, 0.4);
+        }
+        
+        .analysis-btn i {
+            margin-right: 15px;
+            font-size: 24px;
+        }
+        
+        /* Responsif */
+        @media (max-width: 992px) {
+            .months-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            
+            .analysis-btn {
+                min-width: 320px;
+                font-size: 18px;
+                padding: 16px 30px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .months-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .month-name {
+                font-size: 20px;
+            }
+            
+            .school-name {
+                font-size: 26px;
+            }
+            
+            .title {
+                font-size: 26px;
+            }
+            
+            .logo {
+                width: 80px;
+                height: 80px;
+            }
+            
+            .analysis-btn {
+                min-width: 280px;
+                font-size: 17px;
+                padding: 14px 25px;
+            }
+            
+            .analysis-btn i {
+                font-size: 22px;
+                margin-right: 12px;
+            }
+            
+            .month-box {
+                min-height: 60px;
+            }
+            
+            .section {
+                margin: 10px 20px 20px 20px;
+            }
+            
+            .header {
+                padding: 12px 20px 3px 20px;
+            }
+            
+            .analysis-btn-container {
+                padding: 0 20px 15px 20px;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .months-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .section {
+                margin: 8px 15px 15px 15px;
+            }
+            
+            .title {
+                font-size: 22px;
+            }
+            
+            .school-name {
+                font-size: 22px;
+            }
+            
+            .month-name {
+                font-size: 20px;
+            }
+            
+            .month-box {
+                padding: 12px 8px;
+                min-height: 55px;
+            }
+            
+            .logo {
+                width: 70px;
+                height: 70px;
+            }
+            
+            .analysis-btn {
+                min-width: 100%;
+                font-size: 16px;
+                padding: 12px 20px;
+            }
+            
+            .analysis-btn i {
+                font-size: 20px;
+                margin-right: 10px;
+            }
+            
+            .header {
+                padding: 10px 15px 2px 15px;
+            }
+            
+            .analysis-btn-container {
+                padding: 0 15px 10px 15px;
+            }
+        }
+        
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 15px 20px 20px 20px;
+            color: #1A5F7A;
+            font-size: 15px;
+            border-top: none;
+            margin-top: 0;
+            background-color: white;
+        }
+        
+        .footer-main {
+            font-weight: 600;
+            margin-bottom: 5px;
+            font-size: 15px;
+        }
+        
+        .footer-sub {
+            font-weight: 500;
+            font-size: 14px;
+            color: #666;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo-container">
+                <!-- Logo di atas nama sekolah -->
+                <div class="logo">
+                    <img src="https://i.postimg.cc/gj4yDWvw/Screenshot-2025-03-11-at-10-18-11-AM.png" alt="Logo Sekolah">
+                </div>
+                <div class="school-name">SMJK TIONG HUA</div>
+                <h1 class="title">REKOD KEHADIRAN MURID</h1>
+            </div>
+        
+        <!-- Bahagian 1: Rekod Kehadiran Bulanan -->
+        <div class="section">
+            <div class="section-title" style="background-color: #1A9FB2;">
+                <i class="fas fa-calendar-alt"></i>
+                Rekod Kehadiran Bulanan
+            </div>
+            <div class="section-content">
+                <div class="months-grid">
+                    <!-- Baris 1 -->
+                    <a href="https://docs.google.com/spreadsheets/d/1IO-mmOtpdheJMgjRUIv5dHJSnJtmyCKP2HyFgBRGhIE/edit?usp=sharing" target="_blank" class="month-box januari">
+                        <div class="month-name">Januari</div>
+                    </a>
+                    
+                    <a href="https://docs.google.com/spreadsheets/d/1w2LL4IoL6ievgNG3KYo-59bAfX4OwFiUA7zFPfKoBV4/edit?gid=1931464642#gid=1931464642" target="_blank" class="month-box februari">
+                        <div class="month-name">Februari</div>
+                    </a>
+                    
+                    <a href="https://docs.google.com/spreadsheets/d/1EXAMPLE_MAC" target="_blank" class="month-box mac">
+                        <div class="month-name">Mac</div>
+                    </a>
+                    
+                    <a href="https://docs.google.com/spreadsheets/d/1EXAMPLE_APRIL" target="_blank" class="month-box april">
+                        <div class="month-name">April</div>
+                    </a>
+                    
+                    <!-- Baris 2 -->
+                    <a href="https://docs.google.com/spreadsheets/d/1EXAMPLE_MEI" target="_blank" class="month-box mei">
+                        <div class="month-name">Mei</div>
+                    </a>
+                    
+                    <a href="https://docs.google.com/spreadsheets/d/1EXAMPLE_JUN" target="_blank" class="month-box jun">
+                        <div class="month-name">Jun</div>
+                    </a>
+                    
+                    <a href="https://docs.google.com/spreadsheets/d/1EXAMPLE_JULAI" target="_blank" class="month-box julai">
+                        <div class="month-name">Julai</div>
+                    </a>
+                    
+                    <a href="https://docs.google.com/spreadsheets/d/1EXAMPLE_OGOS" target="_blank" class="month-box ogos">
+                        <div class="month-name">Ogos</div>
+                    </a>
+                    
+                    <!-- Baris 3 -->
+                    <a href="https://docs.google.com/spreadsheets/d/1EXAMPLE_SEPTEMBER" target="_blank" class="month-box september">
+                        <div class="month-name">September</div>
+                    </a>
+                    
+                    <a href="https://docs.google.com/spreadsheets/d/1EXAMPLE_OKTOBER" target="_blank" class="month-box oktober">
+                        <div class="month-name">Oktober</div>
+                    </a>
+                    
+                    <a href="https://docs.google.com/spreadsheets/d/1EXAMPLE_NOVEMBER" target="_blank" class="month-box november">
+                        <div class="month-name">November</div>
+                    </a>
+                    
+                    <a href="https://docs.google.com/spreadsheets/d/1EXAMPLE_DISEMBER" target="_blank" class="month-box disember">
+                        <div class="month-name">Disember</div>
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- HANYA BUTANG ANALISIS - TANPA SECTION/CONTAINER -->
+        <div class="analysis-btn-container">
+            <a href="https://docs.google.com/spreadsheets/d/1yf9ZiWyH8K2nLKOtXUbHdZt3_FAaFXcB5jCZrliL9rg/edit?gid=0#gid=0" target="_blank" class="analysis-btn">
+                <i class="fas fa-chart-line"></i>
+                Analisis Kehadiran Bulanan
+            </a>
+        </div>
+        
+        <!-- Footer -->
+        <div class="footer">
+            <div class="footer-main">© 2026 SMJKTH - indexRekod Kehadiran Murid</div>
+            <div class="footer-sub">Disediakan oleh Guru Data dan Maklumat SMJKTH</div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Muat logo dari URL yang diberikan
+            const logoImg = document.querySelector('.logo img');
+            logoImg.onerror = function() {
+                // Jika logo tidak dimuat, gantikan dengan placeholder
+                logoImg.style.display = 'none';
+                const logoDiv = document.querySelector('.logo');
+                logoDiv.innerHTML = '<i class="fas fa-school" style="font-size: 60px; color: #1A5F7A;"></i>';
+            };
+        });
+    </script>
+</body>
+</html>
